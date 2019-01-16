@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+	<div class="row">
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success " onclick="$.operate.add()"
+			   shiro:hasPermission="activiti:process:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()"
+			   shiro:hasPermission="activiti:process:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+			<a class="btn btn-warning" onclick="$.table.search()" shiro:hasPermission="activiti:process:search">
+				<i class="fa fa-download"></i> 查询
+			</a>
+		</div>
+
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('activiti:process:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('activiti:process:remove')}]];
+    var deployFlag = [[${@permission.hasPermi('activiti:process:deploy')}]];
+    var exportFlag = [[${@permission.hasPermi('activiti:process:export')}]];
+
+    var prefix = "/activiti/process";
+
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            removeUrl: prefix + "/remove",
+            updateUrl: prefix + "/edit/{id}",
+            exportUrl: prefix + "/export",
+            deploy: prefix + "/deploy/",
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "流程实例",
+            search: false,
+            showExport: false,
+            uniqueId:"deploymentId",
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'id', // 列字段名
+                    title: '编号' // 列标题
+                },
+                {
+                    field: 'deploymentId', // 列字段名
+                    title: '部署编号' // 列标题
+                },
+
+                {
+                    field: 'name',
+                    title: '流程名称'
+                },
+
+                {
+                    field: 'id',
+                    title: '流程XML',
+                    formatter: function (value, row, index) {
+                        var e = '<a   href="/activiti/process/resource/read/xml/' + row.id + '"  title="xml" target="_blank">xml</a> ';
+                        return e;
+                    }
+                },
+                {
+                    field: 'id',
+                    title: '流程XML',
+                    formatter: function (value, row, index) {
+                        var e = '<a   href="/activiti/process/resource/read/image/' + row.id + '"  title="图片" target="_blank">图片</a> ';
+                        return e;
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs ' + deployFlag + '" href="#" onclick="covertToModel(\'' + row.id + '\')"><i class="fa fa-play-circle-o"></i>转为模型</a> ');
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.deploymentId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function covertToModel(id) {
+        $.modal.confirm("确定要把流程转转换成流程吗？", function () {
+            $.operate.post(prefix + "/convertToModel/" + id, {'id': id});
+        });
+    }
+</script>
+</body>
+</html>

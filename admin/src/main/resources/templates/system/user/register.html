@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+    <script th:src="@{/ajax/libs/validate/jquery.validate.extend.js}"></script>
+    <script th:src="@{/myboot/js/common-ui.js?v=3.1.0}"></script>
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+    <style>
+        body.register {
+            height:auto;
+            background:url([[@{/img/login-background.jpg}]]) no-repeat center fixed;
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            -o-background-size:cover;
+            background-size:cover;
+        }
+        .registerPanel {
+            width:750px;
+            margin:10% auto 0
+        }
+        .registerPanel .form-control, .registerPanel .control-label, .registerPanel .btn {
+            font-size: 15px;
+            color:black;
+        }
+        .registerPanel .btn-group {
+            float: right;
+            padding-right: 60px;
+        }
+        .registerPanel .btn {
+            margin-right: 15px;
+            width: 60px;
+            height: 35px;
+            font-size: 15px;
+            line-height: 0;
+        }
+        .registerPanel form {
+            background:rgba(255,255,255,.2);
+            border:1px solid rgba(255,255,255,.3);
+            -moz-box-shadow:0 3px 0 rgba(12,12,12,.03);
+            -webkit-box-shadow:0 3px 0 rgba(12,12,12,.03);
+            box-shadow:0 3px 0 rgba(12,12,12,.03);
+            -moz-border-radius:3px;
+            -webkit-border-radius:3px;
+            border-radius:3px;
+            padding:30px
+        }
+    </style>
+</head>
+<body class="register">
+    <div class="registerPanel">
+            <form class="form-horizontal m" id="form-user-register">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">登录名称：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="loginName" name="loginName" placeholder="登录名称"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户名称：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="userName" id="userName" placeholder="姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">密码：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="password" name="password" id="password" placeholder="密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">确认密码：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="password" name="confirm" id="confirm" placeholder="再次输入密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">邮箱：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="email" id="email" placeholder="电子邮箱">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">手机：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" name="phonenumber" id="phonenumber" placeholder="手机号码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">性别：</label>
+                    <div class="col-sm-8">
+                        <select id="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-success" id="submit" data-loading="正在注册，请稍后...">注册</button>
+                        <button type="reset" class="btn btn-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+<script>
+    $("#form-user-register").validate({
+        rules:{
+            loginName:{
+                required:true,
+                minlength: 2,
+                maxlength: 20,
+                remote: {
+                    url: ctx + "system/user/checkLoginNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name : function() {
+                            return $.common.trim($("#loginName").val());
+                        }
+                    },
+                    dataFilter: function(data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            userName:{
+                required:true,
+            },
+            password:{
+                required:true,
+                minlength: 5,
+                maxlength: 20
+            },
+            confirm: {
+                required: true,
+                equalTo: "#password"
+            },
+            email:{
+                required:true,
+                email:true,
+                remote: {
+                    url: ctx + "system/user/checkEmailUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: function () {
+                            return $.common.trim($("#email").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            phonenumber:{
+                required:true,
+                isPhone:true,
+                remote: {
+                    url: ctx + "system/user/checkPhoneUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: function () {
+                            return $.common.trim($("#phonenumber").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+
+        },
+        messages: {
+            "loginName": {
+                remote: "用户已经存在"
+            },
+            "email": {
+                remote: "Email已经存在"
+            },
+            "phonenumber":{
+                remote: "手机号码已经存在"
+            },
+            confirm: {
+                required: "请再次输入新密码",
+                equalTo: "两次密码输入不一致"
+            }
+        },
+        submitHandler: function () {
+            register();
+        }
+    });
+
+    function register() {
+        $.modal.loading($("#submit").data("loading"));
+        var userId = $("input[name='userId']").val();
+        var loginName = $("input[name='loginName']").val();
+        var userName = $("input[name='userName']").val();
+        var password = $("input[name='password']").val();
+        var email = $("input[name='email']").val();
+        var phonenumber = $("input[name='phonenumber']").val();
+        var sex = $("#sex option:selected").val();
+        $.ajax({
+            cache : true,
+            type : "post",
+            url : ctx + "system/user/register",
+            data : {
+                "userId": userId,
+                "loginName": loginName,
+                "userName": userName,
+                "password": password,
+                "email": email,
+                "phonenumber": phonenumber,
+                "sex": sex
+            },
+            async : false,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                if (data.code == web_status.SUCCESS) {
+                    layer.msg("注册成功!3秒后自动返回登录界面...", {
+                        icon: $.modal.icon(modal_status.SUCCESS),
+                        shade: [0.3, '#8F8F8F'],
+                        //距离顶部
+                        offset: '10%',
+                        //设置倒计时结束返回登录界面
+                        success: function(layero, index){
+                            // var msg = layero.text();
+                            // 倒计时时间 同time，单位秒
+                            var i = 3;
+                            var timer = null;
+                            var fn = function() {
+                                layero.find(".layui-layer-content").html("<i class=\"layui-layer-ico layui-layer-ico1\"></i>" +
+                                    "注册成功!" + i +"秒后自动返回登录界面...");
+                                if(!i) {
+                                    layer.close(index);
+                                    clearInterval(timer);
+                                }
+                                i--;
+                            };
+                            timer = setInterval(fn, 1000);
+                            fn();
+                        }
+                    }, function () {
+                        // msg弹框关闭后回调至登录界面
+                        window.open("/login", "_self");
+                    });
+                } else {
+                    $.modal.alertError(data.msg);
+                }
+                $.modal.closeLoading();
+            }
+        });
+    }
+</script>
+</body>
+</html>
