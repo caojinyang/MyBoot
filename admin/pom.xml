@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>myboot</artifactId>
-        <groupId>com.caojy</groupId>
+        <groupId>com.myboot</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -41,14 +41,14 @@
 
 		<!-- 核心模块-->
         <dependency>
-            <groupId>com.caojy</groupId>
+            <groupId>com.myboot</groupId>
             <artifactId>framework</artifactId>
             <version>${myboot.version}</version>
         </dependency>
 
         <!-- 工作流 -->
         <dependency>
-            <groupId>com.caojy</groupId>
+            <groupId>com.myboot</groupId>
             <artifactId>activiti</artifactId>
             <version>${myboot.version}</version>
             <scope>compile</scope>
@@ -83,7 +83,7 @@
 		   </plugin>   
         </plugins>
         <finalName>${artifactId}</finalName>
-        <resources>
+<!--        <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
@@ -92,7 +92,7 @@
                 <directory>src/main/resources/${build.profile.id}</directory>
                 <filtering>false</filtering>
             </resource>
-        </resources>
+        </resources>-->
     </build>
 	
 </project>

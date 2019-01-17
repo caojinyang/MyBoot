@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.caojy.common.annotation.Log;
-import com.caojy.common.enums.BusinessType;
+import com.myboot.common.annotation.Log;
+import com.myboot.common.enums.BusinessType;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
-import com.caojy.framework.web.base.BaseController;
-import com.caojy.common.page.TableDataInfo;
-import com.caojy.common.base.AjaxResult;
-import com.caojy.common.utils.ExcelUtil;
+import com.myboot.framework.web.base.BaseController;
+import com.myboot.common.page.TableDataInfo;
+import com.myboot.common.base.AjaxResult;
+import com.myboot.common.utils.ExcelUtil;
 
 /**
  * ${tableComment} 信息操作处理

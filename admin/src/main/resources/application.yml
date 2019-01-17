@@ -29,7 +29,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.caojy: debug
+    com.myboot: debug
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
@@ -70,7 +70,7 @@ spring:
 # MyBatis
 mybatis:
     # 搜索指定包别名
-    typeAliasesPackage: com.caojy
+    typeAliasesPackage: com.myboot
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
@@ -127,7 +127,7 @@ gen:
   # 作者
   author: caojy
   # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
-  packageName: com.caojy.system
+  packageName: com.myboot.system
   # 自动去除表前缀，默认是true
   autoRemovePre: true
   # 表前缀(类名不会包含表前缀)
