@@ -51,6 +51,7 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
+-- 密码为:abcd1234
 insert into sys_user values(1,  null, 'admin', '系统管理员', '00', 'test@test.com', '16888888888', '0', '', 'e6a318dd528ebda712fd93bee378c697', 'caojy', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), 'admin', sysdate(), '管理员');
 
 

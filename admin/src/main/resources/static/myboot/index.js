@@ -150,10 +150,7 @@ $(function() {
         } else if (marginLeftVal > (visibleWidth - $(element).outerWidth(true) - $(element).prev().outerWidth(true))) {
             scrollVal = marginLeftVal - $(element).prev().outerWidth(true);
         }
-        $('.page-tabs-content').animate({
-            marginLeft: 0 - scrollVal + 'px'
-        },
-        "fast");
+        $('.page-tabs-content').animate({marginLeft: 0 - scrollVal + 'px'}, "fast");
     }
 
     //查看左侧隐藏的选项卡
@@ -265,7 +262,7 @@ $(function() {
             $('.mainContent').find('iframe.J_iframe').hide().parents('.mainContent').append(str1);
             
             $.modal.loading("数据加载中，请稍后...");
-            
+
             $('.mainContent iframe:visible').load(function () {
             	$.modal.closeLoading();
             });
