@@ -403,17 +403,19 @@ insert into sys_dict_data values(12, 1,  '通知',     '1',  'sys_notice_type', 
 insert into sys_dict_data values(13, 2,  '公告',     '2',  'sys_notice_type',     '',   'success', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '公告');
 insert into sys_dict_data values(14, 1,  '正常',     '0',  'sys_notice_status',   '',   'primary', 'Y', '0', 'admin', sysdate(), 'admin', sysdate(), '正常状态');
 insert into sys_dict_data values(15, 2,  '关闭',     '1',  'sys_notice_status',   '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '关闭状态');
-insert into sys_dict_data values(16, 1,  '新增',     '1',  'sys_oper_type',       '',   'info',    'N', '0', 'admin', sysdate(), 'admin', sysdate(), '新增操作');
-insert into sys_dict_data values(17, 2,  '修改',     '2',  'sys_oper_type',       '',   'info',    'N', '0', 'admin', sysdate(), 'admin', sysdate(), '修改操作');
-insert into sys_dict_data values(18, 3,  '删除',     '3',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '删除操作');
-insert into sys_dict_data values(19, 4,  '授权',     '4',  'sys_oper_type',       '',   'primary', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '授权操作');
-insert into sys_dict_data values(20, 5,  '导出',     '5',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '导出操作');
-insert into sys_dict_data values(21, 6,  '导入',     '6',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '导入操作');
-insert into sys_dict_data values(22, 7,  '强退',     '7',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '强退操作');
-insert into sys_dict_data values(23, 8,  '生成代码', '8',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '生成操作');
-insert into sys_dict_data values(24, 8,  '清空数据', '9',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '清空操作');
-insert into sys_dict_data values(25, 1,  '成功',     '0',  'sys_common_status',   '',   'primary', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '正常状态');
-insert into sys_dict_data values(26, 2,  '失败',     '1',  'sys_common_status',   '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '停用状态');
+insert into sys_dict_data values(16, 0,  '其他',     '0',  'sys_oper_type',       '',   'info',    'Y', '0', 'admin', sysdate(), 'admin', sysdate(), '其他操作');
+insert into sys_dict_data values(17, 1,  '查询',     '1',  'sys_oper_type',       '',   'info',    'N', '0', 'admin', sysdate(), 'admin', sysdate(), '查询操作');
+insert into sys_dict_data values(18, 2,  '新增',     '2',  'sys_oper_type',       '',   'info',    'N', '0', 'admin', sysdate(), 'admin', sysdate(), '新增操作');
+insert into sys_dict_data values(19, 3,  '修改',     '3',  'sys_oper_type',       '',   'info',    'N', '0', 'admin', sysdate(), 'admin', sysdate(), '修改操作');
+insert into sys_dict_data values(20, 4,  '删除',     '4',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '删除操作');
+insert into sys_dict_data values(21, 5,  '授权',     '5',  'sys_oper_type',       '',   'primary', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '授权操作');
+insert into sys_dict_data values(22, 6,  '导出',     '6',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '导出操作');
+insert into sys_dict_data values(23, 7,  '导入',     '7',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '导入操作');
+insert into sys_dict_data values(24, 8,  '强退',     '8',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '强退操作');
+insert into sys_dict_data values(25, 9,  '生成代码', '9',  'sys_oper_type',       '',   'warning', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '生成操作');
+insert into sys_dict_data values(26, 10,  '清空数据', '10',  'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '清空操作');
+insert into sys_dict_data values(27, 1,  '成功',     '0',  'sys_common_status',   '',   'primary', 'N', '0', 'admin', sysdate(), 'admin', sysdate(), '正常状态');
+insert into sys_dict_data values(28, 2,  '失败',     '1',  'sys_common_status',   '',   'danger',  'N', '0', 'admin', sysdate(), 'admin', sysdate(), '停用状态');
 
 
 -- ----------------------------

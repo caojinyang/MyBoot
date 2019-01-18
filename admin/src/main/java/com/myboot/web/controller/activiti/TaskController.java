@@ -45,7 +45,7 @@ public class TaskController extends BaseController {
      * 查看我的任务  admin 查看所有任务
      * @return
      */
-    @Log(title = "查询任务", businessType = BusinessType.OTHER)
+    @Log(title = "查询任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
     @RequestMapping("/list")
     @ResponseBody
@@ -79,7 +79,7 @@ public class TaskController extends BaseController {
     }
 
 
-    @Log(title = "更新任务", businessType = BusinessType.OTHER)
+    @Log(title = "更新任务", businessType = BusinessType.UPDATE)
     @RequiresPermissions("activiti:task:edit")
     @PostMapping("/edit")
     @ResponseBody
@@ -88,7 +88,7 @@ public class TaskController extends BaseController {
         return toAjax(1);
     }
 
-    @Log(title = "代办任务", businessType = BusinessType.OTHER)
+    @Log(title = "代办任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
     @PostMapping("/todo")
     @ResponseBody
@@ -100,7 +100,7 @@ public class TaskController extends BaseController {
         dataTable.setTotal(task.getCount());
         return dataTable;
     }
-    @Log(title = "受邀任务", businessType = BusinessType.OTHER)
+    @Log(title = "受邀任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
     @PostMapping("/involved")
     @ResponseBody
@@ -112,7 +112,7 @@ public class TaskController extends BaseController {
         dataTable.setTotal(task.getCount());
         return dataTable;
     }
-    @Log(title = "归档任务", businessType = BusinessType.OTHER)
+    @Log(title = "归档任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
     @PostMapping("/archived")
     @ResponseBody
@@ -125,7 +125,7 @@ public class TaskController extends BaseController {
         return dataTable;
     }
 
-    @Log(title = "查询完成的任务", businessType = BusinessType.OTHER)
+    @Log(title = "查询完成的任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
     @PostMapping("/finishedTask")
     public TableDataInfo finishedTask(TaskVO task, ModelMap map) {
