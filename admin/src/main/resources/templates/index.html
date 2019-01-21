@@ -66,6 +66,8 @@
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-default " href="#" title="收起菜单">
                     	<i class="fa fa-bars"></i>
                     </a>
+                    <span id="serverDate" style="display: none" th:text="${new java.util.Date().getTime()}"></span>
+                    <span id="nowDate" class="nowDate">正在获取服务器时间...</span>
                 </div>
                 <ul class="nav navbar-top-links navbar-right welcome-message">
 	                <li>

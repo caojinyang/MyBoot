@@ -221,6 +221,13 @@ body.body-small .navbar-top-links li:last-child {
     float: left;
 }
 
+.nowDate {
+    padding: 5px 0px;
+    margin: 14px 5px 5px 15px;
+    font-size: 15px;
+    float: left;
+}
+
 .navbar-form-custom {
     float: left;
     height: 50px;

@@ -26,6 +26,16 @@ $(function() {
         });
     });
 
+    // 显示当前时间
+    $(function () {
+        var milliseconds = $("#page-wrapper #serverDate").text() ;
+        var _timestamp = Number(milliseconds);
+        setInterval(function() {
+            $("#page-wrapper #nowDate").text(new Date(_timestamp).toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay()));
+            _timestamp += 1000;
+        }, 1000);
+    })
+
     // 侧边栏高度
     function fix_height() {
         var heightWithoutNavbar = $("body > #wrapper").height() - 61;
