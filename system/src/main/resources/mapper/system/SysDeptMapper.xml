@@ -106,9 +106,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateDept" parameterType="SysDept">
  		update sys_dept
  		<set>
- 			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
+			<choose>
+				<when test="parentId == 0">
+					parent_id = null,
+				</when>
+				<otherwise>
+					parent_id = #{parentId},
+				</otherwise>
+			</choose>
  			<if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
- 			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
+ 			ancestors = #{ancestors},
  			<if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
  			<if test="leader != null and leader != ''">leader = #{leader},</if>
  			<if test="phone != null and phone != ''">phone = #{phone},</if>
@@ -144,7 +151,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	        <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
  	        update_time = sysdate()
         </set>
- 	    where dept_id in (${ancestors})
+ 	    where find_in_set(dept_id, #{ancestors})
 	</update>
 
 </mapper> 

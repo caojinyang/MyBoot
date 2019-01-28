@@ -500,6 +500,11 @@
             },
             // 添加信息
             add: function(id) {
+        		// 若有选择行,则传入第一个选择行的ID
+                var row = $('#bootstrap-tree-table').bootstrapTreeTable('getSelections')[0];
+                if ($.common.isEmpty(id) && !$.common.isEmpty(row)) {
+                    id = row[$.table._option.uniqueId]
+                }
             	var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.open("添加" + $.table._option.modalName, url);
             },
@@ -641,7 +646,7 @@
         				if(_expandLevel > 0) {
         					tree.expandNode(nodes[i], true, false, false);
         				}
-    				    $.tree.selectByIdName(treeId, treeName, nodes[i]);
+    				    // $.tree.selectByIdName(treeId, treeName, nodes[i]);
         			}
         			// 展开第二级节点
         			nodes = tree.getNodesByParam("level", 1);
@@ -649,7 +654,7 @@
         				if(_expandLevel > 1) {
         					tree.expandNode(nodes[i], true, false, false);
         				}
-    				    $.tree.selectByIdName(treeId, treeName, nodes[i]);
+    				    // $.tree.selectByIdName(treeId, treeName, nodes[i]);
         			}
         			// 展开第三级节点
         			nodes = tree.getNodesByParam("level", 2);
@@ -657,7 +662,7 @@
         				if(_expandLevel > 2) {
         					tree.expandNode(nodes[i], true, false, false);
         				}
-    				    $.tree.selectByIdName(treeId, treeName, nodes[i]);
+    				    // $.tree.selectByIdName(treeId, treeName, nodes[i]);
         			}
         		}, null, null, "正在加载，请稍后...");
         	},

@@ -149,7 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
  		insert into sys_user(
  			<if test="userId != null and userId != 0">user_id,</if>
- 			<if test="deptId != null and deptId != 0">dept_id,</if>
+			dept_id,
+ 			<!--<if test="deptId != null and deptId != 0">dept_id,</if>-->
  			<if test="loginName != null and loginName != ''">login_name,</if>
  			<if test="userName != null and userName != ''">user_name,</if>
  			<if test="email != null and email != ''">email,</if>
@@ -163,7 +164,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time
  		)values(
  			<if test="userId != null and userId != ''">#{userId},</if>
- 			<if test="deptId != null and deptId != ''">#{deptId},</if>
+ 			<!--<if test="deptId != null and deptId != ''">#{deptId},</if>-->
+			<choose>
+				<when test="deptId == 0">
+					null,
+				</when>
+				<otherwise>
+					#{deptId},
+				</otherwise>
+			</choose>
  			<if test="loginName != null and loginName != ''">#{loginName},</if>
  			<if test="userName != null and userName != ''">#{userName},</if>
  			<if test="email != null and email != ''">#{email},</if>

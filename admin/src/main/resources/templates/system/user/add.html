@@ -210,26 +210,22 @@
 
         /*用户管理-新增-选择部门树*/
         function selectDeptTree() {
-        	var treeId = $("#treeId").val();
-        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        	var url = ctx + "system/dept/selectDeptTree/" + deptId;
+            var deptId = $("#treeId").val();
+            var url = $.common.isEmpty(deptId) ? ctx + "system/dept/selectDeptTree" : prefix + "system/dept/selectDeptTree/" + deptId;
 			var options = {
 				title: '选择部门',
 				width: "380",
-				url: ctx + "system/dept/selectDeptTree/" + deptId,
+				url: url,
 				callBack: doSubmit
 			};
 			$.modal.openOptions(options);
 		}
 		
 		function doSubmit(index, layero){
-			var tree = layero.find("iframe")[0].contentWindow.$._tree;
-			if ($.tree.notAllowParents(tree)) {
-				var body = layer.getChildFrame('body', index);
-    			$("#treeId").val(body.find('#treeId').val());
-    			$("#treeName").val(body.find('#treeName').val());
-    			layer.close(index);
-			}
+			var body = layer.getChildFrame('body', index);
+			$("#treeId").val(body.find('#treeId').val());
+			$("#treeName").val(body.find('#treeName').val());
+			layer.close(index);
 		}
     </script>
 </body>

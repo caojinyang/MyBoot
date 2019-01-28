@@ -380,10 +380,16 @@
             target.find("tbody").find("tr").click(function() {
                 if (target.hasSelectItem) {
                     var _ipt = $(this).find("input[name='select_item']");
+                    // 单选按钮可取消自身选中状态
                     if (_ipt.attr("type") == "radio") {
-                        _ipt.prop('checked', true);
-                        target.find("tbody").find("tr").removeClass("treetable-selected");
-                        $(this).addClass("treetable-selected");
+                        if (_ipt.prop('checked')) {
+                            _ipt.prop('checked', false);
+                            $(this).removeClass("treetable-selected");
+                        } else {
+                            _ipt.prop('checked', true);
+                            target.find("tbody").find("tr").removeClass("treetable-selected");
+                            $(this).addClass("treetable-selected");
+                        }
                     } else {
                         if (_ipt.prop('checked')) {
                             _ipt.prop('checked', false);

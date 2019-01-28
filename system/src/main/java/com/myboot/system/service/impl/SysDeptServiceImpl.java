@@ -34,8 +34,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      */
     @Override
     @DataScope(tableAlias = "d")
-    public List<SysDept> selectDeptList(SysDept dept)
-    {
+    public List<SysDept> selectDeptList(SysDept dept) {
         return deptMapper.selectDeptList(dept);
     }
 
@@ -47,10 +46,20 @@ public class SysDeptServiceImpl implements ISysDeptService
      */
     @Override
     @DataScope(tableAlias = "d")
-    public List<Map<String, Object>> selectDeptTree(SysDept dept)
-    {
+    public List<Map<String, Object>> selectDeptTree(SysDept dept) {
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
-        List<SysDept> deptList = deptMapper.selectDeptList(dept);
+        List<SysDept> deptList = new ArrayList<>();
+        // 设置一个空对象并置于树的第一条
+        SysDept sysDept = new SysDept();
+        sysDept.setDeptId(0L);
+        sysDept.setDeptName("无");
+        sysDept.setStatus(UserConstants.DEPT_NORMAL);
+        deptList.add(sysDept);
+        // 获取已有部门
+        List<SysDept> deptList2 = deptMapper.selectDeptList(dept);
+        if (deptList2 != null && deptList2.size() > 0) {
+            deptList.addAll(deptList2);
+        }
         trees = getTrees(deptList, false, null);
         return trees;
     }
@@ -62,18 +71,14 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 部门列表（数据权限）
      */
     @Override
-    public List<Map<String, Object>> roleDeptTreeData(SysRole role)
-    {
+    public List<Map<String, Object>> roleDeptTreeData(SysRole role) {
         Long roleId = role.getRoleId();
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         List<SysDept> deptList = selectDeptList(new SysDept());
-        if (StringUtils.isNotNull(roleId))
-        {
+        if (StringUtils.isNotNull(roleId)) {
             List<String> roleDeptList = deptMapper.selectRoleDeptTree(roleId);
             trees = getTrees(deptList, true, roleDeptList);
-        }
-        else
-        {
+        } else {
             trees = getTrees(deptList, false, null);
         }
         return trees;
@@ -87,25 +92,19 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @param roleDeptList 角色已存在菜单列表
      * @return
      */
-    public List<Map<String, Object>> getTrees(List<SysDept> deptList, boolean isCheck, List<String> roleDeptList)
-    {
+    public List<Map<String, Object>> getTrees(List<SysDept> deptList, boolean isCheck, List<String> roleDeptList) {
 
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
-        for (SysDept dept : deptList)
-        {
-            if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
-            {
+        for (SysDept dept : deptList) {
+            if (UserConstants.DEPT_NORMAL.equals(dept.getStatus())) {
                 Map<String, Object> deptMap = new HashMap<String, Object>();
                 deptMap.put("id", dept.getDeptId());
                 deptMap.put("pId", dept.getParentId());
                 deptMap.put("name", dept.getDeptName());
                 deptMap.put("title", dept.getDeptName());
-                if (isCheck)
-                {
+                if (isCheck) {
                     deptMap.put("checked", roleDeptList.contains(dept.getDeptId() + dept.getDeptName()));
-                }
-                else
-                {
+                } else {
                     deptMap.put("checked", false);
                 }
                 trees.add(deptMap);
@@ -121,8 +120,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int selectDeptCount(Long parentId)
-    {
+    public int selectDeptCount(Long parentId) {
         SysDept dept = new SysDept();
         dept.setParentId(parentId);
         return deptMapper.selectDeptCount(dept);
@@ -135,8 +133,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果 true 存在 false 不存在
      */
     @Override
-    public boolean checkDeptExistUser(Long deptId)
-    {
+    public boolean checkDeptExistUser(Long deptId) {
         int result = deptMapper.checkDeptExistUser(deptId);
         return result > 0 ? true : false;
     }
@@ -148,8 +145,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int deleteDeptById(Long deptId)
-    {
+    public int deleteDeptById(Long deptId) {
         return deptMapper.deleteDeptById(deptId);
     }
 
@@ -160,15 +156,15 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int insertDept(SysDept dept)
-    {
+    public int insertDept(SysDept dept) {
         SysDept info = deptMapper.selectDeptById(dept.getParentId());
-        // 如果父节点不为"正常"状态,则不允许新增子节点
-        if (!UserConstants.DEPT_NORMAL.equals(info.getStatus()))
-        {
-            throw new BusinessException("部门停用，不允许新增");
+        if (info != null) {
+            // 如果父节点不为"正常"状态,则不允许新增子节点
+            if (!UserConstants.DEPT_NORMAL.equals(info.getStatus())) {
+                throw new BusinessException("部门停用，不允许新增");
+            }
+            dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         }
-        dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         return deptMapper.insertDept(dept);
     }
 
@@ -179,18 +175,20 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public int updateDept(SysDept dept)
-    {
+    public int updateDept(SysDept dept) {
         SysDept info = deptMapper.selectDeptById(dept.getParentId());
-        if (StringUtils.isNotNull(info))
-        {
-            String ancestors = info.getAncestors() + "," + info.getDeptId();
+        if (StringUtils.isNotNull(info)) {
+            String ancestors = "";
+            if (!StringUtils.isEmpty(info.getAncestors())) {
+                ancestors = info.getAncestors() + "," + info.getDeptId();
+            } else {
+                ancestors = info.getDeptId().toString();
+            }
             dept.setAncestors(ancestors);
             updateDeptChildren(dept.getDeptId(), ancestors);
         }
         int result = deptMapper.updateDept(dept);
-        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
-        {
+        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus())) {
             // 如果该部门是启用状态，则启用该部门的所有上级部门
             updateParentDeptStatus(dept);
         }
@@ -202,8 +200,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * 
      * @param dept 当前部门
      */
-    private void updateParentDeptStatus(SysDept dept)
-    {
+    private void updateParentDeptStatus(SysDept dept) {
         String updateBy = dept.getUpdateBy();
         dept = deptMapper.selectDeptById(dept.getDeptId());
         dept.setUpdateBy(updateBy);
@@ -216,8 +213,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @param deptId 部门ID
      * @param ancestors 元素列表
      */
-    public void updateDeptChildren(Long deptId, String ancestors)
-    {
+    public void updateDeptChildren(Long deptId, String ancestors) {
         SysDept dept = new SysDept();
         dept.setParentId(deptId);
         List<SysDept> childrens = deptMapper.selectDeptList(dept);
@@ -238,8 +234,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 部门信息
      */
     @Override
-    public SysDept selectDeptById(Long deptId)
-    {
+    public SysDept selectDeptById(Long deptId) {
         return deptMapper.selectDeptById(deptId);
     }
 
@@ -250,14 +245,33 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public String checkDeptNameUnique(SysDept dept)
-    {
+    public String checkDeptNameUnique(SysDept dept) {
         Long deptId = StringUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
         SysDept info = deptMapper.checkDeptNameUnique(dept.getDeptName(), dept.getParentId());
-        if (StringUtils.isNotNull(info) && info.getDeptId().longValue() != deptId.longValue())
-        {
+        if (StringUtils.isNotNull(info) && info.getDeptId().longValue() != deptId.longValue()) {
             return UserConstants.DEPT_NAME_NOT_UNIQUE;
         }
         return UserConstants.DEPT_NAME_UNIQUE;
+    }
+
+    /**
+     * @Author caojy
+     * @Description 检查此次要添加的上级部门是否已在下级部门当中
+     * @Param
+     * @return
+     **/
+    @Override
+    public String checkLastDept(SysDept dept) {
+        if (dept.getParentId() != null && dept.getParentId().equals(dept.getDeptId())) {
+            // 上级部门不能是自己
+            return  UserConstants.LAST_DEPT_CHECKED_FAILED;
+        }
+        SysDept info = deptMapper.selectDeptById(dept.getParentId());
+        if (StringUtils.isNotNull(info)) {
+            if (info.getAncestors() != null && info.getAncestors().contains(dept.getDeptId().toString())) {
+                return  UserConstants.LAST_DEPT_CHECKED_FAILED;
+            }
+        }
+        return UserConstants.LAST_DEPT_CHECKED;
     }
 }

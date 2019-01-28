@@ -121,11 +121,28 @@ public class SysDeptController extends BaseController {
     }
 
     /**
+     * 校验上级部门选择是否合规
+     */
+    @PostMapping("/checkLastDept")
+    @ResponseBody
+    public String checkLastDept(SysDept dept) {
+        return deptService.checkLastDept(dept);
+    }
+
+    /**
      * 选择部门树
      */
     @GetMapping("/selectDeptTree/{deptId}")
     public String selectDeptTree(@PathVariable("deptId") Long deptId, ModelMap mmap) {
         mmap.put("dept", deptService.selectDeptById(deptId));
+        return prefix + "/tree";
+    }
+
+    /**
+     * 选择部门树
+     */
+    @GetMapping("/selectDeptTree")
+    public String selectDeptTree() {
         return prefix + "/tree";
     }
 

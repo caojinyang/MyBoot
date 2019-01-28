@@ -91,4 +91,12 @@ public interface ISysDeptService
      * @return 结果
      */
     public String checkDeptNameUnique(SysDept dept);
+
+    /**
+     * 校验上级部门是否与自己的下级部门冲突
+     *
+     * @param dept 部门信息
+     * @return 结果
+     */
+    public String checkLastDept(SysDept dept);
 }
