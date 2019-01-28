@@ -127,7 +127,8 @@ public class TaskController extends BaseController {
 
     @Log(title = "查询完成的任务", businessType = BusinessType.QUERY)
     @RequiresPermissions("activiti:task:view")
-    @PostMapping("/finishedTask")
+    @PostMapping("/finished")
+    @ResponseBody
     public TableDataInfo finishedTask(TaskVO task, ModelMap map) {
         startPage(task);
         task.setOwner(ShiroUtils.getLoginName());

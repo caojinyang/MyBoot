@@ -261,7 +261,12 @@ KISBPM.TOOLBAR = {
         },
         
         closeEditor: function(services) {
-        	window.location.href = "./";
+        	// window.location.href = "./";
+            // 避免直接刷新至主界面
+
+            window.parent.location.reload()
+            var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+            parent.layer.close(index);
         },
         
         /**
@@ -326,7 +331,10 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
 
     $scope.saveAndClose = function () {
     	$scope.save(function() {
-    		window.location.href = "./";
+    		// window.location.href = "./";
+            window.parent.location.reload()
+            var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+            parent.layer.close(index);
     	});
     };
     $scope.save = function (successCallback) {

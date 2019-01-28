@@ -47,8 +47,14 @@ activitiModeler
             prefix: './editor-app/i18n/',
             suffix: '.json'
         });
-
-        $translateProvider.preferredLanguage('en');
+        // 修改activiti的语言
+        var language = navigator.language;
+        if ("zh-CN" == language) {
+            $translateProvider.preferredLanguage('zh-CN');
+        } else {
+            $translateProvider.preferredLanguage('en');
+        }
+        // $translateProvider.preferredLanguage('en');
 
         // remember language
         $translateProvider.useCookieStorage();
